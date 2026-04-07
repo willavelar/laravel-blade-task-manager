@@ -1,0 +1,10 @@
+.git
+.claude
+.superpowers
+docs
+node_modules
+vendor
+*.log
+.env
+.env.backup
+storage/logs

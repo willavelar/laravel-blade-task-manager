@@ -9,6 +9,8 @@ Route::get('/', function () {
 });
 
 Route::middleware('auth')->group(function () {
+    Route::get('/dashboard', fn () => redirect()->route('tasks.index'))->name('dashboard');
+
     Route::resource('tasks', TaskController::class);
     Route::patch('tasks/{task}/toggle', [TaskController::class, 'toggle'])
         ->name('tasks.toggle');

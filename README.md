@@ -1,58 +1,177 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Laravel Blade Task Manager
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+A personal task manager built with **Laravel 13** and **Blade** as a portfolio project demonstrating clean MVC architecture, Eloquent relationships, and Docker containerization.
 
-## About Laravel
+![Laravel](https://img.shields.io/badge/Laravel-13.4-FF2D20?style=flat&logo=laravel&logoColor=white)
+![PHP](https://img.shields.io/badge/PHP-8.3-777BB4?style=flat&logo=php&logoColor=white)
+![Docker](https://img.shields.io/badge/Docker-ready-2496ED?style=flat&logo=docker&logoColor=white)
+![License](https://img.shields.io/badge/license-MIT-green?style=flat)
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+---
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Features
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- **Full CRUD** for tasks and categories
+- **Eloquent relationships** — tasks belong to categories, both belong to the authenticated user
+- **Form Request validation** with ownership checks (users only access their own data)
+- **Authentication** via Laravel Breeze (session-based)
+- **Reusable Blade x-components** — sidebar, badges, buttons, form fields, task cards
+- **Task filters** — filter by status (pending/completed) and priority (low/medium/high)
+- **Quick toggle** — mark tasks as done/pending without leaving the list
+- **Dark mode UI** with Tailwind CSS (violet accent, slate palette)
+- **Docker** — PHP 8.3 FPM + Nginx, SQLite, zero host dependencies
 
-## Learning Laravel
+## Tech Stack
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+| Layer | Technology |
+|---|---|
+| Framework | Laravel 13.4 |
+| Language | PHP 8.3 |
+| Frontend | Blade + Tailwind CSS |
+| Authentication | Laravel Breeze |
+| Database | SQLite |
+| Container | Docker (php-fpm + nginx:alpine) |
+| Asset bundler | Vite 8 |
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## Requirements
 
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
+- Docker & Docker Compose
 
-## Agentic Development
+That's it. Node.js and PHP are not required on the host.
 
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+## Getting Started
+
+### 1. Clone the repository
 
 ```bash
-composer require laravel/boost --dev
-
-php artisan boost:install
+git clone git@github.com:willavelar/laravel-blade-task-manager.git
+cd laravel-blade-task-manager
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+### 2. Configure environment
 
-## Contributing
+```bash
+cp .env.example .env
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+The default `.env.example` is already configured for SQLite. No changes needed for local development.
 
-## Code of Conduct
+### 3. Build and start containers
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+```bash
+docker compose up -d --build
+```
 
-## Security Vulnerabilities
+### 4. Install dependencies and set up the application
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+```bash
+docker compose exec app composer install
+docker compose exec app php artisan key:generate
+docker compose exec app php artisan migrate --seed
+```
+
+The `--seed` flag creates a demo user and sample data.
+
+### 5. Build frontend assets
+
+```bash
+# Requires Node.js 20+ on host
+npm install && npm run build
+
+# Or build inside the container (no Node required on host)
+docker compose run --rm app bash -c "curl -fsSL https://deb.nodesource.com/setup_20.x | bash - && apt-get install -y nodejs && npm install && npm run build"
+```
+
+### 6. Access the application
+
+Open **http://localhost:8080** in your browser.
+
+**Demo credentials:**
+```
+Email:    demo@taskmanager.com
+Password: password
+```
+
+## Project Structure
+
+```
+app/
+├── Http/
+│   ├── Controllers/
+│   │   ├── TaskController.php       # CRUD + toggle + filters
+│   │   └── CategoryController.php   # CRUD
+│   └── Requests/
+│       ├── StoreTaskRequest.php
+│       ├── UpdateTaskRequest.php
+│       ├── StoreCategoryRequest.php
+│       └── UpdateCategoryRequest.php
+└── Models/
+    ├── Task.php
+    ├── Category.php
+    └── User.php
+
+resources/views/
+├── components/
+│   ├── sidebar.blade.php
+│   ├── task-card.blade.php
+│   ├── badge.blade.php
+│   ├── priority-badge.blade.php
+│   ├── button.blade.php
+│   ├── form-field.blade.php
+│   └── delete-form.blade.php
+├── tasks/
+│   ├── index.blade.php
+│   ├── create.blade.php
+│   └── edit.blade.php
+└── categories/
+    ├── index.blade.php
+    ├── create.blade.php
+    └── edit.blade.php
+
+docker/
+├── php/
+│   ├── Dockerfile
+│   └── entrypoint.sh
+└── nginx/
+    └── default.conf
+```
+
+## Database Schema
+
+```
+users
+  └── id, name, email, password
+
+categories
+  └── id, user_id, name, color (#hex), icon (emoji)
+
+tasks
+  └── id, user_id, category_id, title, description,
+      priority (low|medium|high), status (pending|completed), due_date
+```
+
+Relationships:
+- `User` → hasMany → `Category`
+- `User` → hasMany → `Task`
+- `Category` → hasMany → `Task`
+- `Task` → belongsTo → `Category`
+
+## Useful Commands
+
+```bash
+# Stop containers
+docker compose down
+
+# Reset database with fresh seed data
+docker compose exec app php artisan migrate:fresh --seed
+
+# View application logs
+docker compose logs -f app
+
+# Run artisan commands
+docker compose exec app php artisan <command>
+```
 
 ## License
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+This project is open-sourced under the [MIT license](https://opensource.org/licenses/MIT).

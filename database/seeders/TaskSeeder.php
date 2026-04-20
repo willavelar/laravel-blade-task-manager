@@ -10,6 +10,10 @@ class TaskSeeder extends Seeder
     public function run(): void
     {
         $user = User::first();
+
+        if ($user->tasks()->exists()) {
+            return;
+        }
         $categories = $user->categories()->pluck('id', 'name');
 
         $tasks = [

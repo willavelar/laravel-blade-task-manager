@@ -26,6 +26,7 @@ RUN mkdir -p database storage/logs storage/framework/cache storage/framework/ses
         storage/framework/views bootstrap/cache \
     && chown -R www-data:www-data storage bootstrap/cache database
 
+RUN rm -f /etc/nginx/sites-enabled/default /etc/nginx/sites-available/default
 COPY docker/nginx/render.conf /etc/nginx/conf.d/default.conf
 COPY docker/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 COPY docker/render-entrypoint.sh /usr/local/bin/entrypoint.sh

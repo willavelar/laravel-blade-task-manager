@@ -2,6 +2,13 @@
 
 A personal task manager built with **Laravel 13** and **Blade** as a portfolio project demonstrating clean MVC architecture, Eloquent relationships, and Docker containerization.
 
+**Live demo:** [laravel-blade-task-manager.onrender.com](https://laravel-blade-task-manager.onrender.com)
+
+```
+Email:    user@example.com
+Password: user
+```
+
 ![Laravel](https://img.shields.io/badge/Laravel-13.4-FF2D20?style=flat&logo=laravel&logoColor=white)
 ![PHP](https://img.shields.io/badge/PHP-8.3-777BB4?style=flat&logo=php&logoColor=white)
 ![Docker](https://img.shields.io/badge/Docker-ready-2496ED?style=flat&logo=docker&logoColor=white)
@@ -88,8 +95,8 @@ Open **http://localhost:8080** in your browser.
 
 **Demo credentials:**
 ```
-Email:    demo@taskmanager.com
-Password: password
+Email:    user@example.com
+Password: user
 ```
 
 ## Project Structure

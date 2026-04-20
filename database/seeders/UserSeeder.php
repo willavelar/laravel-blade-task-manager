@@ -10,10 +10,12 @@ class UserSeeder extends Seeder
 {
     public function run(): void
     {
-        User::create([
-            'name' => 'Demo User',
-            'email' => 'demo@taskmanager.com',
-            'password' => Hash::make('password'),
-        ]);
+        User::firstOrCreate(
+            ['email' => 'demo@taskmanager.com'],
+            [
+                'name' => 'Demo User',
+                'password' => Hash::make('password'),
+            ]
+        );
     }
 }

@@ -1,0 +1,26 @@
+services:
+  - type: web
+    name: laravel-blade-task-manager
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    port: 80
+    healthCheckPath: /
+    envVars:
+      - key: APP_NAME
+        value: "Task Manager"
+      - key: APP_ENV
+        value: production
+      - key: APP_DEBUG
+        value: false
+      - key: APP_KEY
+        sync: false
+      - key: LOG_CHANNEL
+        value: stderr
+      - key: LOG_LEVEL
+        value: error
+      - key: SESSION_DRIVER
+        value: file
+      - key: CACHE_STORE
+        value: file
+      - key: DB_CONNECTION
+        value: sqlite
